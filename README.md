@@ -64,7 +64,7 @@ The goal is to:
 
 ### Phase 3 — Modification Algorithms
 
-* [ ] my_copy
+* [x] my_copy
 * [ ] my_fill
 * [ ] my_transform
 * [ ] my_replace
@@ -97,25 +97,43 @@ stl-algorithms-from-scratch/
 ├── README.md
 │
 ├── docs/
-│   ├── iterator_categories.md
 │   ├── algorithm_requirements.md
-│   └── notes.md
+│   ├── iterator_categories.md
+│   ├── my_count.md
+│   ├── my_find.md
+│   ├── notes.md
+│   └── iterators/
+│       ├── README.md
+│       ├── 01_introduction.md
+│       ├── 02_iterator_categories.md
+│       ├── 03_input_iterator.md
+│       ├── 04_forward_iterator.md
+│       ├── 05_bidirectional_iterator.md
+│       ├── 06_random_access_iterator.md
+│       ├── 07_contiguous_iterator.md
+│       ├── 08_iterator_traits.md
+│       ├── 09_distance_and_advance.md
+│       └── 10_custom_iterator.md
 │
 ├── include/
-│   ├── my_find.hpp
-│   ├── my_count.hpp
 │   ├── my_copy.hpp
-│   └── ...
+│   ├── my_count.hpp
+│   └── my_find.hpp
 │
 ├── examples/
-│   ├── find_example.cpp
-│   ├── count_example.cpp
-│   └── ...
+│   ├── algorithms/
+│   │   ├── count_example.cpp
+│   │   └── find_example.cpp
+│   └── iterators/
+│       ├── bidirectional_iterator_demo.cpp
+│       ├── contiguous_iterator_demo.cpp
+│       ├── forward_iterator_demo.cpp
+│       ├── input_iterator_demo.cpp
+│       ├── iterator_traits_demo.cpp
+│       └── random_access_iterator_demo.cpp
 │
-├── tests/
-│   ├── test_find.cpp
-│   ├── test_count.cpp
-│   └── ...
+└── tests/
+    └── test_find.cpp
 ```
 
 ---
