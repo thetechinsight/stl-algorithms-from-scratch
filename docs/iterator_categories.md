@@ -1,83 +1,76 @@
 # Iterator Categories
 
+An iterator is a generalized pointer that allows STL algorithms
+to work independently of container type.
+
 ## Input Iterator
 
-Supports:
+Supported Operations
 
-```cpp
-*it
-++it
-it != other
-```
+- *it
+- ++it
+- it != other
 
-Examples:
+Examples
 
-- std::forward_list
-- std::list
-- std::vector
+- istream_iterator
+
+Used By
+
+- find
+- count
+- count_if
 
 ---
 
 ## Forward Iterator
 
-Supports:
+Supported Operations
 
-```cpp
-*it
-++it
-it != other
-```
+- Input Iterator operations
+- Multiple passes
 
-Can traverse a range multiple times.
+Examples
 
-Examples:
-
-- std::forward_list
+- forward_list
 
 ---
 
 ## Bidirectional Iterator
 
-Supports:
+Supported Operations
 
-```cpp
---it
-```
+- Forward Iterator operations
+- --it
 
-in addition to Forward Iterator operations.
+Examples
 
-Examples:
+- list
+- set
+- map
 
-- std::list
-- std::set
-- std::map
+Used By
+
+- reverse
 
 ---
 
 ## Random Access Iterator
 
-Supports:
+Supported Operations
 
-```cpp
-it + n
-it - n
-it[n]
-it1 < it2
-```
+- Bidirectional Iterator operations
+- it + n
+- it - n
+- it[n]
 
-Examples:
+Examples
 
-- std::vector
-- std::deque
-- std::array
+- vector
+- deque
+- array
 
----
+Used By
 
-## Contiguous Iterator (C++20)
-
-Elements are stored contiguously in memory.
-
-Examples:
-
-- std::vector
-- std::array
+- sort
+- binary_search
