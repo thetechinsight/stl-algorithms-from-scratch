@@ -49,9 +49,9 @@ The goal is to:
 
 ### Phase 1 — Basic Algorithms
 
-* [ ] my_find
+* [x] my_find
 * [ ] my_find_if
-* [ ] my_count
+* [x] my_count
 * [ ] my_count_if
 * [ ] my_for_each
 

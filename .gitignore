@@ -1,0 +1,22 @@
+# Executables
+*.exe
+*.out
+
+# Object files
+*.o
+*.obj
+
+# Build directories
+build/
+cmake-build-debug/
+cmake-build-release/
+
+# VS Code
+.vscode/
+
+# Visual Studio
+.vs/
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
