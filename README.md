@@ -1,18 +1,36 @@
 # STL Algorithms From Scratch
 
-A repository for understanding how C++ STL algorithms work internally by implementing them using iterators.
+A hands-on exploration of C++ STL internals through custom implementations of algorithms, iterator utilities, and generic programming techniques.
 
 ## Goals
 
-* Learn iterator categories
-* Understand algorithm requirements
+This repository is my personal study project for understanding how C++ STL algorithms work internally.
+
+The goal is to:
+
+* Learn iterator categories and their requirements
+* Understand generic programming with templates
 * Reimplement common STL algorithms
-* Explore template programming
-* Study how generic programming works in C++
+* Explore algorithm complexity and design decisions
+* Build intuition for how containers and algorithms interact
+* Document key STL concepts for future reference
 
 ---
 
-## Iterator Requirements Cheat Sheet
+## Iterator Categories
+
+| Category                    | Supported Operations              |
+| --------------------------- | --------------------------------- |
+| Input Iterator              | Read, increment                   |
+| Output Iterator             | Write, increment                  |
+| Forward Iterator            | Multi-pass traversal              |
+| Bidirectional Iterator      | Forward and backward traversal    |
+| Random Access Iterator      | Arithmetic and indexing           |
+| Contiguous Iterator (C++20) | Random access + contiguous memory |
+
+---
+
+## Common Iterator Operations
 
 | Operation    | Meaning                  |
 | ------------ | ------------------------ |
@@ -25,67 +43,98 @@ A repository for understanding how C++ STL algorithms work internally by impleme
 | `it - n`     | Jump backward            |
 | `it[n]`      | Random access            |
 
-### Iterator Categories
-
-| Category               | Supported Operations           |
-| ---------------------- | ------------------------------ |
-| Input Iterator         | Read, increment                |
-| Output Iterator        | Write, increment               |
-| Forward Iterator       | Multi-pass traversal           |
-| Bidirectional Iterator | Forward and backward traversal |
-| Random Access Iterator | Arithmetic and indexing        |
-
 ---
 
-## Algorithms Implemented
+## Learning Roadmap
 
-### Searching
+### Phase 1 — Basic Algorithms
 
 * [ ] my_find
 * [ ] my_find_if
 * [ ] my_count
 * [ ] my_count_if
-
-### Traversal
-
 * [ ] my_for_each
 
-### Modification
-
-* [ ] my_copy
-* [ ] my_fill
-* [ ] my_transform
-
-### Comparison
-
-* [ ] my_equal
-* [ ] my_mismatch
-
-### Numeric
-
-* [ ] my_accumulate
-
-### Iterator Utilities
+### Phase 2 — Iterator Utilities
 
 * [ ] my_distance
 * [ ] my_advance
 * [ ] my_next
 * [ ] my_prev
 
-### Sorting
+### Phase 3 — Modification Algorithms
+
+* [ ] my_copy
+* [ ] my_fill
+* [ ] my_transform
+* [ ] my_replace
+
+### Phase 4 — Comparison Algorithms
+
+* [ ] my_equal
+* [ ] my_mismatch
+* [ ] my_lexicographical_compare
+
+### Phase 5 — Numeric Algorithms
+
+* [ ] my_accumulate
+* [ ] my_inner_product
+
+### Phase 6 — Advanced Algorithms
 
 * [ ] my_partition
+* [ ] my_reverse
+* [ ] my_rotate
 * [ ] my_sort
+
+---
+
+## Project Structure
+
+```text
+stl-algorithms-from-scratch/
+│
+├── README.md
+│
+├── docs/
+│   ├── iterator_categories.md
+│   ├── algorithm_requirements.md
+│   └── notes.md
+│
+├── include/
+│   ├── my_find.hpp
+│   ├── my_count.hpp
+│   ├── my_copy.hpp
+│   └── ...
+│
+├── examples/
+│   ├── find_example.cpp
+│   ├── count_example.cpp
+│   └── ...
+│
+├── tests/
+│   ├── test_find.cpp
+│   ├── test_count.cpp
+│   └── ...
+```
 
 ---
 
 ## Example: my_find
 
-Requirements:
+**Requirements**
 
 * Dereference (`*it`)
 * Increment (`++it`)
 * Comparison (`!=`)
+
+**Iterator Category**
+
+* Input Iterator or stronger
+
+**Complexity**
+
+* O(n)
 
 ```cpp
 template<typename Iterator, typename T>
@@ -105,20 +154,37 @@ Iterator my_find(Iterator first, Iterator last, const T& value)
 }
 ```
 
-Works with:
-
-* std::vector
-* std::list
-* std::forward_list
-* std::set
-* std::map
-
 ---
 
 ## References
 
-* cppreference.com
-* Effective STL (Scott Meyers)
-* The C++ Standard Library (Nicolai Josuttis)
-* libc++ source code
-* libstdc++ source code
+### Books
+
+* Effective STL — Scott Meyers
+* The C++ Standard Library — Nicolai Josuttis
+
+### Online Resources
+
+* https://en.cppreference.com/w/cpp/algorithm
+* https://en.cppreference.com/w/cpp/iterator
+
+### Source Code
+
+* libc++ (LLVM)
+* libstdc++ (GCC)
+
+---
+
+## Progress
+
+This repository is actively maintained as part of my C++ learning journey.
+
+Each algorithm will include:
+
+* Source code
+* Iterator requirements
+* Complexity analysis
+* Usage examples
+* Notes and observations
+
+Contributions, suggestions, and discussions are welcome.
