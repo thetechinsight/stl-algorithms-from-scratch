@@ -1,167 +1,205 @@
 # Iterator Categories
 
-## Why Iterator Categories Exist
+## Learning Objectives
 
-Not all containers support the same operations efficiently.
+After completing this chapter, you should be able to:
+
+* Explain why iterator categories exist
+* Understand the iterator hierarchy
+* Identify which containers provide which iterator categories
+* Explain algorithm iterator requirements
+* Understand the relationship between iterator capability and algorithm complexity
+* Answer common iterator hierarchy interview questions
+
+---
+
+# Why Iterator Categories Exist
+
+Not all iterators provide the same capabilities.
 
 For example:
 
 ```cpp
-std::vector<int>
+std::vector<int>::iterator
 ```
 
 supports:
 
 ```cpp
-it + 10
-it - 10
-it[5]
+it + 5
+it - 5
+it[3]
 ```
 
-in constant time.
-
-But:
+while:
 
 ```cpp
-std::list<int>
+std::list<int>::iterator
 ```
 
-cannot efficiently jump 10 positions forward because it is implemented as a linked list.
+does not.
 
-Because of these differences, STL classifies iterators into categories based on their capabilities.
-
-Algorithms specify the minimum iterator category they require.
-
----
-
-# Iterator Hierarchy
-
-```text
-Input Iterator
-    ↑
-Forward Iterator
-    ↑
-Bidirectional Iterator
-    ↑
-Random Access Iterator
-    ↑
-Contiguous Iterator (C++20)
-```
-
-Each category inherits the capabilities of the previous category.
-
-For example:
-
-```text
-Random Access Iterator
-=
-Bidirectional Iterator
-+
-Random Access Operations
-```
-
----
-
-# Category 1: Input Iterator
-
-Purpose:
-
-Read elements while moving forward.
-
-*Once you read a value, you typically move forward and don't revisit it.*
-
-Supported Operations:
-
-```cpp
-*it
-++it
-it == other
-it != other
-```
-Example:
+Similarly:
 
 ```cpp
 std::istream_iterator<int>
 ```
 
-Algorithms That Need Only Input Iterators:
+can only move forward and read values once.
 
-```cpp
-find
-count
-count_if
-all_of
-any_of
-none_of
-```
+Because different iterators provide different capabilities, the STL organizes them into categories.
 
-Because they only need:
-
-```cpp
-*it
-++it
-```
-
-# Category 2: Forward Iterator
-
-Purpose:
-
-Read or write elements while moving forward.
-
-Adds:
-
-```text
-Multi-pass traversal
-Meaning you can traverse the same range multiple times safely.
-```
-
-Example:
-
-```cpp
-std::forward_list<int>
-```
-
-Supports:
-
-```cpp
-*it
-++it
-==
-!=
-```
-
-But no:
-
-```cpp
---it
-it + n
-```
-
-Mental Model:
-
-```text
-1 -> 2 -> 3 -> 4
-```
-
-Still forward-only.
-
-But traversal can be repeated.
+Algorithms can then specify the minimum iterator category they require.
 
 ---
 
-# Category 3: Bidirectional Iterator
+# Iterator Hierarchy
+
+The iterator categories defined by the STL are:
+
+![STL Iterator Hierarchy](../img/iterators/STLIteratorHierarchy.png)
+
+Important:
+
+Output Iterators form a separate category because they are write-oriented rather than read-oriented.
+
+---
+
+# Why Categories Matter
+
+Consider:
+
+```cpp
+std::find(first, last, value);
+```
+
+The algorithm only needs:
+
+```cpp
+*it
+++it
+it != last
+```
+
+Therefore it can work with a very weak iterator category.
+
+Now consider:
+
+```cpp
+std::sort(first, last);
+```
+
+The algorithm needs:
+
+```cpp
+it + n
+last - first
+```
+
+Therefore it requires a stronger iterator category.
+
+The STL uses iterator categories to express these requirements.
+
+---
+
+# Iterator Categories Overview
+
+| Category                    | Ability                           | Typical Providers                   |
+| --------------------------- | --------------------------------- | ----------------------------------- |
+| Output Iterator             | Write forward                     | ostream_iterator, inserters         |
+| Input Iterator              | Read forward once                 | istream_iterator                    |
+| Forward Iterator            | Read forward multiple times       | forward_list, unordered containers  |
+| Bidirectional Iterator      | Read forward and backward         | list, set, multiset, map, multimap  |
+| Random Access Iterator      | Read with random access           | vector, deque, array, string        |
+| Contiguous Iterator (C++20) | Random access + contiguous memory | vector, array, string, raw pointers |
+
+---
+
+# Output Iterator
 
 Purpose:
 
-Move in both directions.
+```text
+Write values into a destination.
+```
+
+Typical examples:
+
+```cpp
+std::ostream_iterator
+std::back_insert_iterator
+std::front_insert_iterator
+std::insert_iterator
+```
+
+Typical operation:
+
+```cpp
+*it = value;
+```
+
+Output Iterators are write-oriented.
+
+---
+
+# Input Iterator
+
+Purpose:
+
+```text
+Read values while moving forward.
+```
+
+Typical examples:
+
+```cpp
+std::istream_iterator
+```
+
+Typical operations:
+
+```cpp
+*it
+++it
+```
+
+Input Iterators are generally considered single-pass iterators.
+
+---
+
+# Forward Iterator
+
+Purpose:
+
+```text
+Read forward multiple times.
+```
+
+Examples:
+
+```cpp
+std::forward_list
+std::unordered_set
+std::unordered_map
+```
 
 Adds:
 
-```cpp
---it
+```text
+Multi-pass guarantee
 ```
 
-Now movement is possible in both directions.
+Copies of a Forward Iterator remain independently usable.
+
+---
+
+# Bidirectional Iterator
+
+Purpose:
+
+```text
+Move both forward and backward.
+```
 
 Examples:
 
@@ -169,57 +207,25 @@ Examples:
 std::list
 std::set
 std::map
-std::multiset
-std::multimap
 ```
-## Algorithms Requiring Bidirectional
-
-Example:
-```cpp
-std::reverse
-```
-
-Why?
-
-Because reverse needs:
-
-```cpp
-++first
---last
-```
-from both ends.
-
-
-Mental Model:
-
-```text
-1 <-> 2 <-> 3 <-> 4
-```
-
-You can move forward and backward.
-
----
-
-# Category 4: Random Access Iterator
-
-Purpose:
-
-Jump directly to any position.
 
 Adds:
 
 ```cpp
-it + n
-it - n
-it += n
-it -= n
-it[n]
-it1 < it2
-it1 > it2
-
+--it
 ```
-and all of those are constant time.
 
+This enables reverse traversal.
+
+---
+
+# Random Access Iterator
+
+Purpose:
+
+```text
+Jump directly to any position.
+```
 
 Examples:
 
@@ -227,137 +233,165 @@ Examples:
 std::vector
 std::deque
 std::array
-T*
+std::string
 ```
 
-## Why sort Requires Random Access
-
-Consider:
-```cpp
-middle = first + (last - first)/2;
-```
-
-This operation must be fast.
-
-Therefore:
+Adds:
 
 ```cpp
-std::sort
+it + n
+it - n
+it[n]
 ```
 
-requires Random Access Iterators
+and constant-time distance calculation.
 
-Mental Model:
+---
 
-```text
-Index-based access
-```
-
-
-# Category 5: Contiguous Iterator (C++20)
+# Contiguous Iterator (C++20)
 
 Purpose:
 
-Guarantee that elements are stored contiguously in memory.
-Meaning Elements are physically adjacent in memory
+```text
+Guarantee contiguous memory layout.
+```
 
 Examples:
 
 ```cpp
+std::vector
+std::array
+std::string
 int*
-std::vector<int>::iterator
-std::array<int>::iterator
-
-not
-- std::deque (because deque storage is segmented)
 ```
 
-Guarantee:
+Additional guarantee:
 
 ```cpp
 &*(it + n)
-==
+```
+
+behaves like:
+
+```cpp
 std::addressof(*it) + n
 ```
 
-This allows implementations to use low-level memory optimizations.
+This enables low-level memory optimizations.
 
 ---
 
-# Iterator Categories and Containers
+# Category Capability Comparison
 
-| Container    | Iterator Category          |
-| ------------ | -------------------------- |
-| forward_list | Forward                    |
-| list         | Bidirectional              |
-| set          | Bidirectional              |
-| map          | Bidirectional              |
-| vector       | Random Access + Contiguous |
-| array        | Random Access + Contiguous |
-| deque        | Random Access              |
-| raw pointer  | Contiguous                 |
-
----
-
-# Algorithm Requirements
-
-| Algorithm | Minimum Requirement    |
-| --------- | ---------------------- |
-| find      | Input Iterator         |
-| count     | Input Iterator         |
-| copy      | Input Iterator         |
-| reverse   | Bidirectional Iterator |
-| sort      | Random Access Iterator |
-
-Algorithms are written against the minimum capability required.
-
-This is one of the core design principles of STL.
+| Operation         | Output | Input | Forward | Bidirectional | Random Access | Contiguous |
+| ----------------- | ------ | ----- | ------- | ------------- | ------------- | ---------- |
+| Read (*it)        | No     | Yes   | Yes     | Yes           | Yes           | Yes        |
+| Write (*it=value) | Yes    | No    | Usually | Usually       | Usually       | Usually    |
+| ++it              | Yes    | Yes   | Yes     | Yes           | Yes           | Yes        |
+| --it              | No     | No    | No      | Yes           | Yes           | Yes        |
+| it + n            | No     | No    | No      | No            | Yes           | Yes        |
+| it[n]             | No     | No    | No      | No            | Yes           | Yes        |
+| Multi-pass        | No     | No    | Yes     | Yes           | Yes           | Yes        |
+| Contiguous Memory | No     | No    | No      | No            | No            | Yes        |
 
 ---
 
-# Important Interview Question
+# Iterator Categories and Algorithms
 
-Why does:
+Algorithms specify the minimum iterator category they require.
 
-```cpp
-std::sort(v.begin(), v.end());
-```
+Examples:
 
-work?
+| Algorithm     | Minimum Requirement     |
+| ------------- | ----------------------- |
+| find          | Input Iterator          |
+| count         | Input Iterator          |
+| copy          | Input + Output Iterator |
+| reverse       | Bidirectional Iterator  |
+| binary_search | Random Access Iterator  |
+| sort          | Random Access Iterator  |
 
-but:
+This is one of the key design principles of STL.
 
-```cpp
-std::sort(lst.begin(), lst.end());
-```
+---
 
-fail?
+# Interview Questions
+
+## Q1
+
+Why does std::sort() work on std::vector but not std::list?
 
 Answer:
 
-`std::sort` requires Random Access Iterators.
+`std::sort()` requires Random Access Iterators.
 
 `std::vector` provides Random Access Iterators.
 
-`std::list` provides only Bidirectional Iterators.
+`std::list` provides Bidirectional Iterators.
 
-Therefore `std::sort` cannot operate on `std::list`.
+---
 
-Instead:
+## Q2
 
-```cpp
-lst.sort();
+What is the difference between Input Iterator and Forward Iterator?
+
+Answer:
+
+Forward Iterators provide the multi-pass guarantee.
+
+Input Iterators do not.
+
+---
+
+## Q3
+
+Why is Output Iterator separate from the hierarchy?
+
+Answer:
+
+Because Output Iterators are write-oriented while the other iterator categories are read-oriented.
+
+---
+
+## Q4
+
+What category does std::vector::iterator belong to?
+
+Answer:
+
+```text
+Input
+Forward
+Bidirectional
+Random Access
+Contiguous
 ```
 
-must be used.
+because iterator categories build upon one another.
+
+---
+
+## Q5
+
+What category does std::list::iterator belong to?
+
+Answer:
+
+```text
+Input
+Forward
+Bidirectional
+```
+
+but not Random Access.
 
 ---
 
 # Key Takeaways
 
-1. Iterators are categorized by capability.
-2. Categories form a hierarchy.
-3. More powerful categories support more operations.
-4. Algorithms specify the minimum iterator category required.
-5. Containers expose iterators.
-6. Algorithms operate on iterators, not containers.
+1. Iterator categories describe iterator capabilities.
+2. Stronger iterator categories support more operations.
+3. Output Iterators are separate from the read-oriented hierarchy.
+4. Algorithms specify minimum iterator requirements.
+5. Iterator categories directly influence algorithm complexity.
+6. Understanding iterator categories is essential for STL design and interview preparation.
