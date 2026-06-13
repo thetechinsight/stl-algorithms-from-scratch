@@ -2,7 +2,7 @@
 
 ## Overview
 
-Iterators are one of the most important concepts in the Standard Template Library (STL).
+Iterators are one of the fundamental building blocks of the Standard Template Library (STL).
 
 The STL is built around three core components:
 
@@ -43,17 +43,17 @@ because it operates on iterators rather than containers.
 
 # Learning Objectives
 
-After completing this section, you should be able to:
+After completing this module, you should be able to:
 
 * Explain the purpose of iterators in STL
 * Understand iterator categories and capabilities
-* Understand STL range semantics `[first,last)`
+* Understand STL range semantics `[first, last)`
 * Explain algorithm iterator requirements
+* Understand iterator utility functions
 * Understand iterator adapters
-* Understand iterator_traits
-* Understand tag dispatching
-* Implement custom iterators
-* Explain iterator-related interview questions confidently
+* Understand iterator traits
+* Explain common iterator-related interview questions
+* Understand how STL algorithms depend on iterator categories
 
 ---
 
@@ -88,7 +88,7 @@ This allows algorithms to remain independent from container implementations.
 ## Part 1: Fundamentals
 
 * Iterator Fundamentals
-* Iterator Categories
+* Iterator Categories Overview
 
 ## Part 2: Iterator Categories
 
@@ -108,23 +108,16 @@ This allows algorithms to remain independent from container implementations.
 
 ## Part 4: Iterator Adapters
 
-* reverse_iterator
-* insert_iterator
-* ostream_iterator
-* istream_iterator
-* move_iterator
+* Reverse Iterators
+* Insert Iterators
+* Stream Iterators
+* Move Iterators
 
 ## Part 5: STL Internals
 
 * iterator_traits
-* Iterator Tags
-* Tag Dispatching
-* Compile-Time Optimization
-
-## Part 6: Implementation
-
-* Building a Custom Iterator
-* Making Custom Iterators Work with STL Algorithms
+* Iterator Categories and Algorithm Selection
+* How STL Algorithms Use Iterators
 
 ---
 
@@ -144,26 +137,100 @@ This allows algorithms to remain independent from container implementations.
 
 Note:
 
-Output Iterators form a separate category because they are write-oriented rather than read-oriented.
+Output Iterators form a separate hierarchy because they are write-oriented rather than read-oriented.
+
+---
+
+# Module Contents
+
+```text
+iterators/
+
+README.md
+
+01_iterator_fundamentals.md
+02_iterator_categories.md
+
+03_output_iterator.md
+04_input_iterator.md
+05_forward_iterator.md
+06_bidirectional_iterator.md
+07_random_access_iterator.md
+08_contiguous_iterator.md
+
+09_auxiliary_iterator_functions.md
+
+10_iterator_adapters.md
+11_reverse_iterators.md
+12_insert_iterators.md
+13_stream_iterators.md
+14_move_iterators.md
+
+15_iterator_traits.md
+```
+
+---
+
+# Example Programs
+
+```text
+examples/iterators/
+
+input_iterator_demo.cpp
+forward_iterator_demo.cpp
+bidirectional_iterator_demo.cpp
+random_access_iterator_demo.cpp
+contiguous_iterator_demo.cpp
+
+reverse_iterator_demo.cpp
+insert_iterator_demo.cpp
+stream_iterator_demo.cpp
+move_iterator_demo.cpp
+
+iterator_traits_demo.cpp
+```
 
 ---
 
 # Interview Focus
 
-Common interview topics covered in this section:
+Common interview topics covered in this module:
 
 * What is an iterator?
 * Why STL uses iterators
-* Input vs Output Iterator
+* Input Iterator vs Output Iterator
+* Forward Iterator vs Input Iterator
+* Bidirectional Iterator vs Random Access Iterator
 * Why std::sort requires Random Access Iterators
-* Why std::list cannot use std::sort
-* Difference between vector and deque iterators
-* Complexity of std::distance()
+* Why std::list cannot be used with std::sort
 * Complexity of std::advance()
+* Complexity of std::distance()
+* Reverse Iterators
+* Insert Iterators
+* Stream Iterators
+* Move Iterators
 * iterator_traits
-* Tag dispatching
-* Reverse iterators
-* Insert iterators
+* Iterator category based optimization
+
+---
+
+# Current Status
+
+```text
+Iterator Fundamentals        ✅
+Iterator Categories          ✅
+Iterator Utility Functions   ✅
+Iterator Adapters            ✅
+Iterator Traits              ✅
+```
+
+This module provides the iterator knowledge required to understand and implement STL algorithms.
+
+Next Module:
+
+```text
+Algorithms
+```
 
 ---
 
@@ -182,33 +249,3 @@ Additional References:
 * libstdc++
 * libc++
 * MSVC STL
-
----
-
-# Folder Structure
-
-```text
-iterators/
-
-README.md
-
-01_iterator_fundamentals.md
-02_iterator_categories.md
-
-03_output_iterator.md
-04_input_iterator.md
-05_forward_iterator.md
-06_bidirectional_iterator.md
-07_random_access_iterator.md
-08_contiguous_iterator.md
-
-09_distance_and_advance.md
-
-10_reverse_iterator.md
-11_insert_iterator.md
-12_stream_iterator.md
-13_move_iterator.md
-
-14_iterator_traits.md
-15_custom_iterator.md
-```
